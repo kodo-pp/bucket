@@ -1,2 +1,2 @@
-# bucket
-Implementation of my extended BrainFuck dialect
+# cIDE
+Console C/C++ IDE
