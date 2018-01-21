@@ -9,6 +9,7 @@ extern "C" {
 
 bool enterRawMode(void);
 bool exitRawMode(void);
+void get_term_size(int *, int *);
 
 #ifdef __cplusplus
 } /* extern "C" */

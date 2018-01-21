@@ -1,6 +1,7 @@
 #include <unistd.h>
 #include <termios.h>
 #include <stdlib.h>
+#include <sys/ioctl.h>
 
 #include "rawio.h"
 
@@ -26,9 +27,25 @@ bool enterRawMode(void) {
 }
 
 bool exitRawMode(void) {
+    write(STDIN_FILENO, "\033[2J\033[0;0H", 10);
+
     if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &orig_mode) == -1) {
         return false;
     }
 
     return true;
+}
+
+void get_term_size(int *w, int *h) {
+    struct winsize ws;
+
+    int success = ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws);
+
+    if (success == -1 || ws.ws_col == 0) {
+        *w = 80;
+        *h = 24;
+    } else {
+        *w = ws.ws_col;
+        *h = ws.ws_row;
+    }
 }
